@@ -12,14 +12,14 @@ file(GLOB SRC_FILES
   "${CMAKE_SOURCE_DIR}/src/*.cpp"
   "${CMAKE_SOURCE_DIR}/src/Libs/*.cpp"
 )
-add_executable(OpenGLStarter ${SRC_FILES})
+add_executable(Lab09_OpenGL ${SRC_FILES})
 
-target_include_directories(OpenGLStarter PRIVATE
+target_include_directories(Lab09_OpenGL PRIVATE
   ${CMAKE_SOURCE_DIR}/src
   ${CMAKE_SOURCE_DIR}/src/Libs
 )
 
-target_link_libraries(OpenGLStarter PRIVATE
+target_link_libraries(Lab09_OpenGL PRIVATE
   OpenGL::GL
   glfw
   GLEW::GLEW
@@ -27,8 +27,8 @@ target_link_libraries(OpenGLStarter PRIVATE
 )
 
 if(APPLE)
-  target_compile_definitions(OpenGLStarter PRIVATE GL_SILENCE_DEPRECATION)
-  target_link_libraries(OpenGLStarter PRIVATE
+  target_compile_definitions(Lab09_OpenGL PRIVATE GL_SILENCE_DEPRECATION)
+  target_link_libraries(Lab09_OpenGL PRIVATE
     "-framework Cocoa" "-framework IOKit" "-framework CoreVideo"
   )
 endif()
@@ -37,5 +37,12 @@ endif()
 add_custom_target(copy_shaders ALL
   COMMAND ${CMAKE_COMMAND} -E copy_directory
           ${CMAKE_SOURCE_DIR}/Shaders
-          $<TARGET_FILE_DIR:OpenGLStarter>/Shaders)
-add_dependencies(OpenGLStarter copy_shaders)
+          $<TARGET_FILE_DIR:Lab09_OpenGL>/Shaders)
+add_dependencies(Lab09_OpenGL copy_shaders)
+
+# Copy textures next to the binary
+add_custom_target(copy_textures ALL
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+          ${CMAKE_SOURCE_DIR}/Textures
+          $<TARGET_FILE_DIR:Lab09_OpenGL>/Textures)
+add_dependencies(Lab09_OpenGL copy_textures)
